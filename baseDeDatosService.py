@@ -13,7 +13,7 @@ class BaseDeDatosService:
         self.mailService = usuarioService
         self.archivoService = archivoService
 
-    def mostrarBaseDeDatos():
+    def mostrarBaseDeDatos(): # eliminar al final
         conexion1 = mysql.connector.connect(host="localhost", user="root", passwd="")
         cursor1 = conexion1.cursor()
         cursor1.execute("show databases")
@@ -47,8 +47,31 @@ class BaseDeDatosService:
     def conexionSQL(self):
         return mysql.connector.connect(host="localhost", user="root", passwd="", database= self.baseDeDatos)
 
-    def crearTabla(self): # pasar nombre por parametro?
-        if(self.seCreoLaTabla("archivos_drive")):
+    
+    def crearBaseDeDatos(self):
+        if(not self.existeLaBase("archivos")):
+            conexion1 = mysql.connector.connect(host="localhost", user="root", passwd="")
+            cursor1 = conexion1.cursor()
+            cursor1.execute("CREATE DATABASE archivos")
+            conexion1.close()
+            print("Se creo la base de datos: 'archivos'")
+        else:
+            print("La base 'archivos' ya existe.")
+
+    def existeLaBase(self, nombreBase):
+        conexion1 = mysql.connector.connect(host="localhost", user="root", passwd="")
+        cursor1 = conexion1.cursor()
+        cursor1.execute("show databases")
+        
+        for base in cursor1:
+            if (base[0] == nombreBase):
+                conexion1.close()
+                return True
+        conexion1.close()
+        return False
+
+    def crearTablaArchivosDrive(self):
+        if(not self.existeLaTabla("archivos_drive")):
             conexion1 = self.conexionSQL()
             cursor1 = conexion1.cursor()
             cursor1.execute("CREATE TABLE archivos_drive (id INT AUTO_INCREMENT PRIMARY KEY, file_id VARCHAR(255), nombre VARCHAR(255), ext VARCHAR(255), owner VARCHAR(255), visibilidad VARCHAR(255), fecha_modificacion DATETIME)")
@@ -57,13 +80,15 @@ class BaseDeDatosService:
         else:
             print("La tabla archivos_drive ya existe.")
 
-    def seCreoLaTabla(self, nombreTabla):
+    def existeLaTabla(self, nombreTabla):
         conexion1 = self.conexionSQL()
         cursor1 = conexion1.cursor()
         cursor1.execute("show tables")
         for table in cursor1:
-            if (table == nombreTabla):
+            if (table[0] == nombreTabla):
+                conexion1.close()
                 return True
+        conexion1.close()
         return False
 
     def cargarArchivo(self, file):
@@ -110,9 +135,9 @@ class BaseDeDatosService:
         #Se le debe colocar el [0:19] dado que el file['modifiedDate] trae consigo milesimas de segundos (.%f) que no son captados por archivo[1] por el tipo de datetime de la base de datos
                 
 
-        print("No se pudo encontrar el archivo de nombre: %s en la base de datos para comparar la fecha de modificacion" % file['title'])
-        conexion1.close()
-        return None  # No deberia de retornar acá nunca pero por las dudas
+        #print("No se pudo encontrar el archivo de nombre: %s en la base de datos para comparar la fecha de modificacion" % file['title'])
+        #conexion1.close()
+        #return None  # No deberia de retornar acá nunca pero por las dudas
 
     def enLaBaseEstaElArchivo(self, file, tabla): #TODO: CAMBIAR PROBABLEMENTE
         conexion1 = self.conexionSQL()
@@ -127,28 +152,8 @@ class BaseDeDatosService:
         conexion1.close()
         print("el archivo de id: %s no se encontro en la tabla: %s" % (file['id'],tabla))
         return False
-
-    #def insertarEnHistorialArchivosPublicos(self, file):
-    #    conexion1 = self.conexionSQL()
-    #    cursor1 = conexion1.cursor()
-    #    cursor1.execute("SELECT file_id FROM historialarchivospublicos")
-    #    archivos = cursor1.fetchall()
-    #
-    #    for archivo in archivos:
-    #        if(archivo[0] == file['id']):
-    #            print("El archivo de nombre %s ya esta en la tabla HistorialArchivosPublicos" % file['title'])
-    #            return # chequear
-    #
-    #    query ="insert into HistorialArchivosPublicos(file_id, nombre, fecha_modificacion) values (%s,%s,%s)"
-    #    datos = (file['id'], file['title'], file['modifiedDate'])        
-    #    cursor1.execute(query, datos)
-    #
-    #    conexion1.commit()
-    #    conexion1.close()
-    #    
-    #    print("Se ha agregado al historial de archivos publicos el archivo de id: %s y nombre: %s" % (file['id'], file['title']))
-            
-    def eliminarArchivoDeLaBase(self, file): # Cambiar: tengo q traer todos los registros y borrar cada uno?
+        
+    def eliminarArchivoDeLaBase(self, file): # TODO: necesita comparar el registro completo
         try:
             conexion1 = self.conexionSQL()
             cursor1 = conexion1.cursor()
