@@ -29,12 +29,15 @@ class BaseDeDatosService:
     def seCargoElArchivo(self, file):
         conexion1 = self.conexionSQL()
         cursor1 = conexion1.cursor()
-        query = "SELECT file_id FROM archivos_drive WHERE file_id = %s, nombre = %s, ext %s, owner %s, visibilidad %s, fecha_modificacion = %s"
-        datos = (file['id'], file['title'], file['fileExtension'], ' '.join(file['ownerNames']), self.archivoService.visibilidadDe(file), file['modifiedDate'])        
+        query = "SELECT file_id FROM archivos_drive WHERE file_id = %s and nombre = %s and ext = %s and owner = %s and visibilidad = %s and fecha_modificacion = %s"
+        datos = (file['id'], file['title'], file['fileExtension'], ' '.join(file['ownerNames']), self.archivoService.visibilidadDe(file), file['modifiedDate'][0:19]) # [0:19]    
         cursor1.execute(query,datos)
         registro = cursor1.fetchone()
+        print(datos)
         if registro is not None:
+            print("Se encontro el archivo: %s" % file['title'])
             return True
+        print("NO se encontro el archivo: %s" % file['title'])            
         return False
 
     def seCargaronTodosLosArchivosDelDrive(self):

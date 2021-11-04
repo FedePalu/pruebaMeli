@@ -24,7 +24,7 @@ class ManejoArchivos:
         else:
             return 'Privado'
 
-    def cambiarVisibilidadAPrivada(self, file):
+    def cambiarVisibilidadAPrivada(self, file): # sacar try, tiene q fallar
         try:
             file['shared'] = False
             permissions = file.GetPermissions()

@@ -28,11 +28,17 @@ class TestHandler():
     
 handler = TestHandler()
 
+def test_seCreoLaBase():
+    # Creo la base
+    handler.baseHandle.crearBaseDeDatos()
+    # Verifico que existe
+    assert handler.baseHandle.existeLaBase("archivos")
+
 def test_seCreaLaTabla():
     # Creo la tabla
-    handler.baseHandle.crearTabla()
+    handler.baseHandle.crearTablaArchivosDrive()
     # Verifico que existe en la base de datos
-    assert handler.baseHandle.seCreoLaTabla("archivos_drive")
+    assert handler.baseHandle.existeLaTabla("archivos_drive")
 
 def test_seSubieronTodosLosArchivosDrive():
     # Cargar todos los archivos del drive
