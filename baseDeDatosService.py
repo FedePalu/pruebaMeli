@@ -96,15 +96,18 @@ class BaseDeDatosService:
     def laFechaDeModificacionEsMasNueva(self, file):
         conexion1 = self.conexionSQL()
         cursor1 = conexion1.cursor()
-        cursor1.execute("SELECT file_id, fecha_modificacion FROM archivos_drive")
-        archivos = cursor1.fetchall()
-
-        for archivo in archivos:
-            if(archivo[0] == file['id']):
-                conexion1.close()
-                return archivo[1] < datetime.strptime(file['modifiedDate'][0:19],'%Y-%m-%dT%H:%M:%S') 
-                #Formato RFC 3339 '%Y-%m-%dT%H:%M:%S.%fZ'
-                #Se le debe colocar el [0:19] dado que el file['modifiedDate] trae consigo milesimas de segundos (.%f) que no son captados por archivo[1] por el tipo de datetime de la base de datos
+        cursor1.execute("SELECT fecha_modificacion FROM archivos_drive WHERE file_id = '%s'" % file['id'])
+        fechasModificaciones = cursor1.fetchall()
+        modificacionReciente = fechasModificaciones[0][0]
+        
+        for fecha in fechasModificaciones:
+            if(fecha[0] > modificacionReciente):
+                modificacionReciente = fecha[0]
+                
+        conexion1.close()
+        return modificacionReciente < datetime.strptime(file['modifiedDate'][0:19],'%Y-%m-%dT%H:%M:%S') 
+        #Formato RFC 3339 '%Y-%m-%dT%H:%M:%S.%fZ'
+        #Se le debe colocar el [0:19] dado que el file['modifiedDate] trae consigo milesimas de segundos (.%f) que no son captados por archivo[1] por el tipo de datetime de la base de datos
                 
 
         print("No se pudo encontrar el archivo de nombre: %s en la base de datos para comparar la fecha de modificacion" % file['title'])

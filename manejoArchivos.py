@@ -6,7 +6,7 @@ class ManejoArchivos:
 
     def __init__(self, idRuta):
         self.idRuta = idRuta
-        self.gauth = GoogleAuth()
+        self.gauth = GoogleAuth() # Toma la informacion del 'client_secrets.json', es decir, linkea la credencial con la app
         self.gauth.LocalWebserverAuth()
         self.drive = GoogleDrive(self.gauth)
         

@@ -19,11 +19,11 @@ with open('config.json', "r") as readFile:
 # PASOS:
 # 1. CREAR TABLA
 
-baseHandle.crearTabla()
+#baseHandle.crearTabla()
 
 # 2. SUBIR TODOS LOS ARCHIVOS DRIVE
 
-#baseHandle.cargarTodosLosArchivosDelDrive()
+baseHandle.cargarTodosLosArchivosDelDrive()
 
 
 #baseHandle.subirTodosLosArchivosDelDrive()
