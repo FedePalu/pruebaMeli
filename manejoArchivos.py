@@ -13,12 +13,16 @@ class ManejoArchivos:
     # La lista de archivos debe ser un metodo calculable dado que tiene que estar actualizada siempre que se llama
     def fileList(self):
         return self.drive.ListFile({'q': f"'{self.idRuta}'" + " in parents and trashed=false"}).GetList()
-        
 
     def verArchivosDrive(self):
         for file in self.fileList():
             print('ID: %s, Nombre: %s, Extension: %s, Owner: %s, Visibilidad: %s, Ultima modificacion: %s, Email del owner: %s' % ( file['id'], file['title'], file['fileExtension'], ' '.join(file['ownerNames']), file['shared'], file['modifiedDate'], file['owners'][0]['emailAddress']))
 
+    def visibilidadDe(self, file):
+        if (file['shared']):
+            return 'Publico'
+        else:
+            return 'Privado'
 
     def cambiarVisibilidadAPrivada(self, file):
         try:

@@ -28,6 +28,16 @@ class TestHandler():
     
 handler = TestHandler()
 
+def test_seCreaLaTabla():
+    # Creo la tabla
+    # Verifico que existe en la base de datos
+    assert handler.baseHandle.seCreoLaTabla("archivos_drive")
+
+def test_seSubieronTodosLosArchivosDrive():
+    # Traer todos los archivos drive
+    # Por cada archivo fijarme si el registro entero de los campos esta
+    assert handler.baseHandle.seCargaronTodosLosArchivosDelDrive()
+
 def test_insertoEnTablaArchivosDrive():
     # Creo el archivo
     nombre = "testing" + str(random.randrange(1000,5000,66))
@@ -40,7 +50,7 @@ def test_insertoEnTablaArchivosDrive():
     assert handler.baseHandle.enLaBaseEstaElArchivo(file, "archivosdrive")
     # Borro el archivo de Google Drive y de la base de datos
     handler.archivosHandle.eliminarArchivoDelDrive(file)
-    handler.baseHandle.eliminarArchivoDeLaBase(file,"archivosdrive")
+    #handler.baseHandle.eliminarArchivoDeLaBase(file,"archivosdrive")
     
 def test_insertoEnTablaHistorialPublico():
     # Creo el archivo
@@ -54,7 +64,7 @@ def test_insertoEnTablaHistorialPublico():
     assert handler.baseHandle.enLaBaseEstaElArchivo(file, "HistorialArchivosPublicos")
     # Borro el archivo de Google Drive y de la base de datos
     handler.archivosHandle.eliminarArchivoDelDrive(file)
-    handler.baseHandle.eliminarArchivoDeLaBase(file,"HistorialArchivosPublicos")
+    #handler.baseHandle.eliminarArchivoDeLaBase(file,"HistorialArchivosPublicos")
 
 def test_insertoArchivoPublicoEnArchivosDriveYComprueboHistorial():
     # Creo archivo publico
@@ -69,6 +79,6 @@ def test_insertoArchivoPublicoEnArchivosDriveYComprueboHistorial():
     # Borro el archivo de Google Drive y de la base de datos
     handler.archivosHandle.eliminarArchivoDelDrive(file)
     handler.baseHandle.eliminarArchivoDeLaBase(file,"archivosdrive")
-    handler.baseHandle.eliminarArchivoDeLaBase(file,"HistorialArchivosPublicos")
+    #handler.baseHandle.eliminarArchivoDeLaBase(file,"HistorialArchivosPublicos")
 
 
