@@ -1,10 +1,9 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 setup(
     name="pruebaMeli",
     version="1.0",
     author='Federico Palumbo',
-    py_modules=['nmigen_cocotb'], #
-    setup_requires=['pydrive', 'mysql-connector', 'python-dotenv', 'pytest', 'virtualenv'], #virtualenv?
-    install_requires=[]
+    install_requires=['pydrive', 'mysql-connector', 'pytest'],
+    package = find_packages('.')
 )

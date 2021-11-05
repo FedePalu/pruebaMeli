@@ -14,7 +14,7 @@ import random
 #           c. 'passUsuario': contraseña de la credencial del mail para su utilización a través de algún servicio.
 #           d. 'rutaDB': ruta de la base de datos MySQL.
 #   
-#   Los test se pueden correr con 'python -m pytest test.py'
+#   Los test se pueden correr con 'python -m pytest test.py' / 'pytest'
 #
 
 class TestHandler():

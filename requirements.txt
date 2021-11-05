@@ -1,0 +1,3 @@
+pydrive
+mysql-connector
+pytest
