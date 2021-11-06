@@ -16,8 +16,8 @@ class ManejoArchivos:
 
     def verArchivosDrive(self):
         for file in self.fileList():
-            print('ID: %s, Nombre: %s, Extension: %s, Owner: %s, Visibilidad: %s, Ultima modificacion: %s, Email del owner: %s' % ( file['id'], file['title'], file['fileExtension'], ' '.join(file['ownerNames']), file['shared'], file['modifiedDate'], file['owners'][0]['emailAddress']))
-
+            print('ID: %s, Nombre: %s, Extension: %s, Owner: %s, Visibilidad: %s, Ultima modificacion: %s, Email del owner: %s' % ( file['id'], file['title'], file['fileExtension'], ' '.join(file['ownerNames']), self.visibilidadDe(file), file['modifiedDate'], file['owners'][0]['emailAddress']))
+            
     def visibilidadDe(self, file):
         if (file['shared']):
             return 'Publico'

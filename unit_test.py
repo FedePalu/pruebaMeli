@@ -1,21 +1,10 @@
 from baseDeDatosService import *
 from manejoArchivos import *
 from usuarioService import *
+from unittest.mock import MagicMock, Mock
 import json
-import random
-
-#   Prerrequisitos para el buen funcionamiento del test:
-#       1. Instalar MySQL y algún programa para administrar las bases de datos como por ejemplo PHPMyAdmin (junto con PHP y Apache)
-#       2. Haber instalado todas las dependencias setup.py 
-#       3. Tener el client-secret.json en la misma ruta que los .py
-#       4. Haber generado un archivo 'config.json' con los siguientes datos:
-#           a. 'idRutaDrive': ruta de la carpeta de Google Drive donde estarán los archivos a analizar.
-#           b. 'mailUsuario': mail que se utilizará para el envío de notificaciones. Por ejemplo 'example@gmail.com'.
-#           c. 'passUsuario': contraseña de la credencial del mail para su utilización a través de algún servicio.
-#           d. 'rutaDB': ruta de la base de datos MySQL.
-#   
-#   Los test se pueden correr con 'python -m pytest test.py' / 'pytest'
-#
+   
+#   Los test se corren ejecutando 'pytest'
 
 class TestHandler():
     def __init__(self):
@@ -28,16 +17,12 @@ class TestHandler():
     
 handler = TestHandler()
 
-def test_seCreoLaBase():
+def test_creoBaseYTabla():
     # Creo la base
     handler.baseHandle.crearBaseDeDatos()
+    handler.baseHandle.crearTablaArchivosDrive()
     # Verifico que existe
     assert handler.baseHandle.existeLaBase("archivos")
-
-def test_seCreaLaTabla():
-    # Creo la tabla
-    handler.baseHandle.crearTablaArchivosDrive()
-    # Verifico que existe en la base de datos
     assert handler.baseHandle.existeLaTabla("archivos_drive")
 
 def test_seSubieronTodosLosArchivosDrive():
@@ -45,6 +30,22 @@ def test_seSubieronTodosLosArchivosDrive():
     handler.baseHandle.cargarTodosLosArchivosDelDrive()
     # Por cada archivo fijarme si el registro entero de los campos esta
     assert handler.baseHandle.seCargaronTodosLosArchivosDelDrive()
+
+def test_cargoArchivoConModificaciones():
+    pass
+
+def test_cargoArchivoSinModificaciones():
+    pass
+
+def test_cargoArchivoPublico():
+    # baseHandle(mock, ...)
+    #file = crear
+    #mockDrive = Mock()
+    #mockMailSender = Mock()
+    #baseHandle = BaseDeDatosService(config['rutaDB']??, mockMailSender, mockDrive)
+
+    #mockDrive.visibilidadDe = 'Publico'
+    pass
 
 #def test_insertoEnTablaArchivosDrive():
 #    # Creo el archivo

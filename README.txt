@@ -1,13 +1,16 @@
 Prerrequisitos para el buen funcionamiento del test:
    1. Instalar MySQL y algún programa para administrar las bases de datos como por ejemplo PHPMyAdmin (junto con PHP y Apache)
-   2. Haber instalado todas las dependencias 'requirements.txt' con 'pip install -r requirements.txt'  
+   2. Haber instalado todas las dependencias 'requirements.txt' ejecutando 'pip install -r requirements.txt'  
    3. Tener el client-secret.json en la misma ruta que los '.py':
         https://medium.com/@chingjunetao/simple-way-to-access-to-google-service-api-a22f4251bb52
    4. Haber generado un archivo 'config.json' con los siguientes datos:
-       a. 'idRutaDrive': ruta de la carpeta de Google Drive donde estarán los archivos a analizar.
+       a. 'idRutaDrive': id de la carpeta de Google Drive donde estarán los archivos a analizar. 'root' para directorio principal. 
+          El id se puede conseguir parándote en la carpeta de Drive y ver la URL: www.../folders/[id]
        b. 'mailUsuario': mail que se utilizará para el envío de notificaciones. Por ejemplo 'example@gmail.com'.
        c. 'passUsuario': contraseña de la credencial del mail para su utilización a través de algún servicio.
        #d. 'rutaDB': ruta de la base de datos MySQL.
+
+     Los test se corren ejecutando 'pytest'
 
 La documentación para el realizado de este proyecto es la siguiente:
 
@@ -27,6 +30,8 @@ La documentación para el realizado de este proyecto es la siguiente:
 
 # Testing:
 - https://realpython.com/pytest-python-testing/
+- https://docs.python.org/3/library/unittest.mock.html
+- https://www.oulub.com/es-ES/Python/library.unittest.mock-examples
 
 # Utilización de ambiente local (venv):
 - https://programwithus.com/learn/python/pip-virtualenv-windows

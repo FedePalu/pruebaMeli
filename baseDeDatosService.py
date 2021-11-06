@@ -1,7 +1,5 @@
-from mysql.connector import fabric
 from manejoArchivos import *
 from usuarioService import *
-from types import new_class
 import mysql.connector
 
 from datetime import *     
@@ -33,7 +31,7 @@ class BaseDeDatosService:
         datos = (file['id'], file['title'], file['fileExtension'], ' '.join(file['ownerNames']), self.archivoService.visibilidadDe(file), file['modifiedDate'][0:19]) # [0:19]    
         cursor1.execute(query,datos)
         registro = cursor1.fetchone()
-        print(datos)
+        #return (registro is not None)
         if registro is not None:
             print("Se encontro el archivo: %s" % file['title'])
             return True
@@ -113,11 +111,11 @@ class BaseDeDatosService:
             print("El archivo de nombre: %s ya esta en la base y no tiene modificacion reciente" % file['title']) 
             return None        
         else:
-            self.cargarArchivo(file)
+            self.cargarArchivo(file) # metodo a testear con mock
 
         if (file['shared']):
             self.archivoService.cambiarVisibilidadAPrivada(file)
-            self.mailService.enviarCorreoCambioDeVisibilidad(file)
+            self.mailService.enviarCorreoCambioDeVisibilidad(file) # metodo a testear con mock
             self.cargarArchivo(file)
            
 
@@ -136,13 +134,8 @@ class BaseDeDatosService:
         return modificacionReciente < datetime.strptime(file['modifiedDate'][0:19],'%Y-%m-%dT%H:%M:%S') 
         #Formato RFC 3339 '%Y-%m-%dT%H:%M:%S.%fZ'
         #Se le debe colocar el [0:19] dado que el file['modifiedDate] trae consigo milesimas de segundos (.%f) que no son captados por archivo[1] por el tipo de datetime de la base de datos
-                
-
-        #print("No se pudo encontrar el archivo de nombre: %s en la base de datos para comparar la fecha de modificacion" % file['title'])
-        #conexion1.close()
-        #return None  # No deberia de retornar acá nunca pero por las dudas
-
-    def enLaBaseEstaElArchivo(self, file, tabla): #TODO: CAMBIAR PROBABLEMENTE
+        
+    def enLaBaseEstaElArchivo(self, file, tabla):
         conexion1 = self.conexionSQL()
         cursor1 = conexion1.cursor()
         cursor1.execute("SELECT file_id FROM " + tabla)
@@ -165,4 +158,4 @@ class BaseDeDatosService:
             conexion1.close()
             print("Se ha eliminado de la tabla: archivos_drive el archivo: %s con id: %s" % (file['title'], file['id']))
         except:
-            print("No se ha podido eliminar de la base el archivo: %s con id: %s" % (file['title'], file['id']))    
+            print("No se ha podido eliminar de la base el archivo: %s con id: %s" % (file['title'], file['id']))

@@ -5,7 +5,6 @@ from usuarioService import *
 import json
 
 
-
 with open('config.json', "r") as readFile: # poner en un metodo?
     config = json.load(readFile)
     idRutaDrive = config['idRutaDrive']
