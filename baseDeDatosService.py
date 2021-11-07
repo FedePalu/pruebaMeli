@@ -116,27 +116,18 @@ class BaseDeDatosService:
             return 'Privado'
 
 
+    def drop(self):
+        if(self.existeLaBase()):
+            conexion1 = mysql.connector.connect(host="localhost", user="root", passwd="")
+            cursor1 = conexion1.cursor()
+            cursor1.execute("DROP DATABASE %s" % self.nombreBase)
+            conexion1.close()
 
 
-
-
-
-
-
-
-
-
-
-    def seCargoElArchivo(self, file):
+    def getArchivos(self):
         conexion1 = self.conexionSQL()
         cursor1 = conexion1.cursor()
-        query = "SELECT file_id FROM archivos_drive WHERE file_id = %s and nombre = %s and ext = %s and owner = %s and visibilidad = %s and fecha_modificacion = %s"
-        datos = (file['id'], file['title'], file['fileExtension'], ' '.join(file['ownerNames']), self.archivoService.visibilidadDe(file), file['modifiedDate'][0:19]) # [0:19]    
-        cursor1.execute(query,datos)
-        registro = cursor1.fetchone()
-        return (registro is not None)
-        #if registro is not None:
-        #    print("Se encontro el archivo: %s" % file['title'])
-        #    return True
-        #print("NO se encontro el archivo: %s" % file['title'])            
-        #return False
+        cursor1.execute("SELECT * FROM %s" % self.nombreTabla) 
+        registroArchivos = cursor1.fetchall()
+        conexion1.close()
+        return registroArchivos #TODO: convertir a objetos

@@ -14,14 +14,16 @@ class ManejoArchivos:
     def fileList(self):
         return self.drive.ListFile({'q': f"'{self.idRuta}'" + " in parents and trashed=false"}).GetList()
 
-
-    def cambiarVisibilidadAPrivada(self, file):
+    def quitarPermisos(self, file):
         file['shared'] = False
         permissions = file.GetPermissions()
         for permission in permissions:
             if (permission['id'] != file['owners'][0]['permissionId']):
                 file.DeletePermission(permission['id'])
-                
+        
+
+    def cambiarVisibilidadAPrivada(self, file):
+        self.quitarPermisos(file)       
         file.UpdateMetadata()
         file.Upload()
             
