@@ -1,4 +1,5 @@
 from baseDeDatosService import *
+from importador import Importador
 from manejoArchivos import *
 from usuarioService import *
 from unittest.mock import MagicMock, Mock
@@ -10,10 +11,11 @@ class TestHandler():
     def __init__(self):
         with open('config.json', "r") as readFile:
             config = json.load(readFile)
-            self.idRutaDrive = config['idRutaDrive']
-            self.archivosHandle = ManejoArchivos(self.idRutaDrive)   
-            self.mailHandle = UsuarioService(config['mailUsuario'], config['passUsuario'])
-            self.baseHandle = BaseDeDatosService(config['rutaDB'], self.mailHandle, self.archivosHandle)
+            idRutaDrive = config['idRutaDrive']
+            driveService = ManejoArchivos(idRutaDrive)   
+            mailService = UsuarioService(config['mailUsuario'], config['passUsuario'])
+            baseService = BaseDeDatosService("archivos", "archivos_drive")
+            self.importador = Importador(driveService, baseService, mailService)
     
 handler = TestHandler()
 

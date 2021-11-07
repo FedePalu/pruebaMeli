@@ -6,6 +6,7 @@ from email.mime.text import MIMEText
 class UsuarioService:
     
     def __init__(self, remitente, password):
+        self.connection = smtplib.SMTP(host='smtp.gmail.com', port=587)  
         self.remitente = remitente
         self.password = password
 
@@ -19,11 +20,10 @@ class UsuarioService:
             mimemsg['To'] = file['owners'][0]['emailAddress']
             mimemsg['Subject'] = asunto
             mimemsg.attach(MIMEText(body, 'plain'))
-            connection = smtplib.SMTP(host='smtp.gmail.com', port=587)
-            connection.starttls()
-            connection.login(self.remitente,self.password)
-            connection.send_message(mimemsg)
-            connection.quit()
-            print("El mensaje se ha enviado con exito")
+            self.connection.starttls()
+            self.connection.login(self.remitente,self.password)
+            self.connection.send_message(mimemsg)
+            self.connection.quit()
         except:
-            print("Ha habido un error al enviar el mensaje")
+            # Me importa que falle?
+            None

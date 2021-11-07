@@ -1,27 +1,21 @@
-#from socketserver import BaseServer
-from manejoArchivos import *
-from baseDeDatosService import *
-from usuarioService import *
+from importador import *
 import json
 
 
 with open('config.json', "r") as readFile: # poner en un metodo?
     config = json.load(readFile)
     idRutaDrive = config['idRutaDrive']
-    archivosHandle = ManejoArchivos(idRutaDrive)   
-    mailHandle = UsuarioService(config['mailUsuario'], config['passUsuario'])
-    baseHandle = BaseDeDatosService(config['rutaDB'], mailHandle, archivosHandle)
+    driveService = ManejoArchivos(idRutaDrive)   
+    mailService = UsuarioService(config['mailUsuario'], config['passUsuario'])
+    baseService = BaseDeDatosService("archivos", "archivos_drive")
+    importador = Importador(driveService, baseService, mailService)
+
+importador.run()
+print("Se cargaron todos los archivos")
 
 
-# PASOS:
-# 1. CREAR BASE
-# baseHandle.crearBaseDeDatos()
 
-# 2. CREAR TABLA
-# baseHandle.crearTablaArchivosDrive()
 
-# 3. SUBIR TODOS LOS ARCHIVOS DRIVE
-# baseHandle.cargarTodosLosArchivosDelDrive()
 
 
 
