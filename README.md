@@ -2,7 +2,7 @@
    1. [python](https://www.python.org/downloads/) 3.10 o superior 
    2. Motor de base de datos MySQL
    3. Instalar todas las dependencias 'requirements.txt' ejecutando `pip install -r requirements.txt`  
-   4. Tener el client-secret.json en la misma ruta que los '.py':
+   4. Seguir los pasos para descargar el .json de acceso a la utilización de su drive, cambiarle el nombre a 'client_secrets.json' y colocarlo en la misma dirección que los '.py':
         https://medium.com/@chingjunetao/simple-way-to-access-to-google-service-api-a22f4251bb52
    5. Haber generado un archivo 'config.json' con los siguientes datos:
       
