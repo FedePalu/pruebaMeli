@@ -1,5 +1,10 @@
 {
     "idRutaDrive": "1J1YYeIfMgXIU-i9gC7kpSO3bouZ7MBgz", 
+    "baseName": "archivos",
+    "tableName": "archivos_drive",
     "mailUsuario": "fedepalu87@gmail.com", 
-    "passUsuario": "rdismuvhwhjhhcjd"
+    "passUsuario": "rdismuvhwhjhhcjd",
+    "hostDB": "localhost",
+    "userDB": "root",
+    "passDB": ""
 }

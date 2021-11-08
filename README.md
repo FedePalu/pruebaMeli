@@ -9,15 +9,19 @@
       - `idRutaDrive`: id de la carpeta de Google Drive donde estarán los archivos a analizar. 'root' para directorio principal. 
           El id se puede conseguir parándote en la carpeta de Drive y ver la URL: www.../folders/[id]
       
+      - `baseName`: nombre de la base de datos.
+
+      - `tableName`: nombre de la tabla.
+
       - `mailUsuario`: mail que se utilizará para el envío de notificaciones. Por ejemplo 'example@gmail.com'.
       
       - `passUsuario`: contraseña de la credencial del mail para su utilización a través de algún servicio. En caso de gmail: https://techexpert.tips/es/python-es/python-enviar-correo-electronico-usando-gmail/ 
        
-      - `hostDB`: host de la base de datos, por default 'localhost' 
+      - `hostDB`: host de la base de datos, por default "localhost" 
       
-      - `userDB`: user de la base de datos, por default 'root'
+      - `userDB`: user de la base de datos, por default "root"
       
-      - `passDB`: contraseña de la base de datos, por default ''
+      - `passDB`: contraseña de la base de datos, por default ""
 
 # Funciones:
    1. El programa se corre ejecutando `python main.py` 

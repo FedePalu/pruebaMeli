@@ -12,7 +12,7 @@ class TestHandler:
         self.driveService = Mock()
         self.driveService.fileList.return_value = []
         self.mailService = Mock()
-        self.baseService = BaseDeDatosService("archivos_test", "archivos_drive")
+        self.baseService = BaseDeDatosService("archivos_test", "archivos_drive", "localhost", "root", "")
         self.importador = Importador(self.driveService, self.baseService, self.mailService)
             
 handler = TestHandler()
@@ -41,7 +41,6 @@ def test_seGuardanArchivosPrivados():
     handler.driveService.fileList.return_value = [archivoPrivado, otroArchivoPrivado]
     handler.importador.run()
     archivos = handler.baseService.getArchivos() 
-    # TODO: hacer un assert mas copado
     assert len(archivos) == 2
 
 def test_archivosPublicos():
@@ -55,7 +54,6 @@ def test_seDuplicanRegistrosArchivosPublicos():
     handler.driveService.fileList.return_value = [archivoPublico]
     handler.importador.run()
     archivos = handler.baseService.getArchivos() 
-    # TODO: hacer un assert mas copado
     assert len(archivos) == 2
 
 def test_cargoArchivoConModificaciones():
@@ -64,7 +62,6 @@ def test_cargoArchivoConModificaciones():
     archivoPrivado['modifiedDate'] = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
     handler.importador.run()
     archivos = handler.baseService.getArchivos() 
-    # TODO: hacer un assert mas copado
     assert len(archivos) == 2
 
 
@@ -73,5 +70,4 @@ def test_cargoArchivoSinModificaciones():
     handler.importador.run()
     handler.importador.run()
     archivos = handler.baseService.getArchivos() 
-    # TODO: hacer un assert mas copado
     assert len(archivos) == 1
