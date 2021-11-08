@@ -6,14 +6,14 @@
         https://medium.com/@chingjunetao/simple-way-to-access-to-google-service-api-a22f4251bb52
    5. Haber generado un archivo 'config.json' con los siguientes datos:
       
-      - `idRutaDrive`: id de la carpeta de Google Drive donde estarán los archivos a analizar. 'root' para directorio principal. 
+      - `idRutaDrive`: id de la carpeta de Google Drive donde estarán los archivos a analizar. "root" para directorio principal. 
           El id se puede conseguir parándote en la carpeta de Drive y ver la URL: www.../folders/[id]
       
       - `baseName`: nombre de la base de datos.
 
       - `tableName`: nombre de la tabla.
 
-      - `mailUsuario`: mail que se utilizará para el envío de notificaciones. Por ejemplo 'example@gmail.com'.
+      - `mailUsuario`: mail que se utilizará para el envío de notificaciones. Por ejemplo "example@gmail.com".
       
       - `passUsuario`: contraseña de la credencial del mail para su utilización a través de algún servicio. En caso de gmail: https://techexpert.tips/es/python-es/python-enviar-correo-electronico-usando-gmail/ 
        
