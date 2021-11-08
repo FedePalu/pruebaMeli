@@ -12,7 +12,13 @@ class ManejoArchivos:
         
     # La lista de archivos debe ser un metodo calculable dado que tiene que estar actualizada siempre que se llama
     def fileList(self):
+        return filter(self.esFile,self.allFiles())
+    
+    def allFiles(self):
         return self.drive.ListFile({'q': f"'{self.idRuta}'" + " in parents and trashed=false"}).GetList()
+    
+    def esFile(self, file):
+        return file['mimeType'] != 'application/vnd.google-apps.folder'
 
     def quitarPermisos(self, file):
         file['shared'] = False
