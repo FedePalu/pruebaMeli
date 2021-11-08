@@ -2,10 +2,8 @@ from baseDeDatosService import *
 from importador import Importador
 from manejoArchivos import *
 from usuarioService import *
-from unittest.mock import MagicMock, Mock
+from unittest.mock import Mock
 import pytest
-
-import json
    
 #   Los test se corren ejecutando 'pytest'
 
@@ -18,12 +16,17 @@ class TestHandler:
         self.importador = Importador(self.driveService, self.baseService, self.mailService)
             
 handler = TestHandler()
-archivoPublico = { "id": '1', "title": 'filePrivado.txt', "shared": True, "fileExtension": 'txt', "ownerNames": ["Federico"], "modifiedDate": datetime.now() }
-        
+archivoPublico = { "id": '1', "title": 'filePrivado.txt', "shared": True, "fileExtension": 'txt', "ownerNames": ["Federico"], "modifiedDate": datetime.now().strftime('%Y-%m-%dT%H:%M:%S') }
+archivoPrivado = {"id": '1', "title": 'filePrivado.txt', "shared": False, "fileExtension": 'txt', "ownerNames": ["Federico"], "modifiedDate": datetime.now().strftime('%Y-%m-%dT%H:%M:%S') }
+otroArchivoPrivado = {"id": '2', "title": 'filePublico.txt', "shared": False, "fileExtension": 'txt', "ownerNames": ["Federico"], "modifiedDate": datetime.now().strftime('%Y-%m-%dT%H:%M:%S') }
+    
 
 @pytest.fixture(autouse=True)
 def run_around_tests():
-    handler = TestHandler() # ver esto  
+    handler.driveService = Mock()
+    handler.driveService.fileList.return_value = []
+    handler.mailService = Mock()
+    handler.importador = Importador(handler.driveService, handler.baseService, handler.mailService)
     handler.baseService.drop()
     yield
     handler.baseService.drop()
@@ -35,15 +38,18 @@ def test_seCreaEntorno():
     assert handler.baseService.existeLaTabla()
 
 def test_seGuardanArchivosPrivados():
-    handler.driveService.fileList.return_value = [
-        {"id": '1', "title": 'filePrivado.txt', "shared": False, "fileExtension": 'txt', "ownerNames": ["Federico"], "modifiedDate": datetime.now() },
-        {"id": '2', "title": 'filePublico.txt', "shared": False, "fileExtension": 'txt', "ownerNames": ["Federico"], "modifiedDate": datetime.now() }
-    ]
+    handler.driveService.fileList.return_value = [archivoPrivado, otroArchivoPrivado]
     handler.importador.run()
     archivos = handler.baseService.getArchivos() 
     # TODO: hacer un assert mas copado
-    assert len(archivos) == 2 
+    assert len(archivos) == 2
 
+def test_archivosPublicos():
+    handler.driveService.fileList.return_value = [archivoPublico]
+    handler.importador.run()
+
+    handler.mailService.enviarCorreoCambioDeVisibilidad.assert_called_once_with(archivoPublico)
+    handler.driveService.cambiarVisibilidadAPrivada.assert_called_once_with(archivoPublico)
 
 def test_seDuplicanRegistrosArchivosPublicos():
     handler.driveService.fileList.return_value = [archivoPublico]
@@ -52,14 +58,20 @@ def test_seDuplicanRegistrosArchivosPublicos():
     # TODO: hacer un assert mas copado
     assert len(archivos) == 2
 
-def test_envioMailPorCambioVisibilidad():
-    handler.driveService.fileList.return_value = [archivoPublico]
-    handler.importador.run()
-
-    handler.mailService.enviarCorreoCambioDeVisibilidad.assert_called_once_with()
-
 def test_cargoArchivoConModificaciones():
-    pass
+    handler.driveService.fileList.return_value = [archivoPrivado]
+    handler.importador.run()
+    archivoPrivado['modifiedDate'] = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+    handler.importador.run()
+    archivos = handler.baseService.getArchivos() 
+    # TODO: hacer un assert mas copado
+    assert len(archivos) == 2
+
 
 def test_cargoArchivoSinModificaciones():
-    pass
+    handler.driveService.fileList.return_value = [archivoPrivado]
+    handler.importador.run()
+    handler.importador.run()
+    archivos = handler.baseService.getArchivos() 
+    # TODO: hacer un assert mas copado
+    assert len(archivos) == 1

@@ -1,4 +1,4 @@
-Prerrequisitos para el buen funcionamiento del test:
+Prerrequisitos para el buen funcionamiento:
    1. Instalar MySQL y algún programa para administrar las bases de datos como por ejemplo PHPMyAdmin (junto con PHP y Apache)
    2. Haber instalado todas las dependencias 'requirements.txt' ejecutando 'pip install -r requirements.txt'  
    3. Tener el client-secret.json en la misma ruta que los '.py':
@@ -8,7 +8,9 @@ Prerrequisitos para el buen funcionamiento del test:
           El id se puede conseguir parándote en la carpeta de Drive y ver la URL: www.../folders/[id]
        b. 'mailUsuario': mail que se utilizará para el envío de notificaciones. Por ejemplo 'example@gmail.com'.
        c. 'passUsuario': contraseña de la credencial del mail para su utilización a través de algún servicio.
-       #d. 'rutaDB': ruta de la base de datos MySQL.
+       d. 'hostDB':
+       e. 'userDB':
+       f. 'passDB':
 
      Los test se corren ejecutando 'pytest'
 
